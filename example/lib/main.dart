@@ -1,26 +1,26 @@
-import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:flutter/material.dart';
 
 import 'package:flutter/services.dart';
 import 'package:plugin_codelab/plugin_codelab.dart';
 
-enum _KeyType { Black, White }
+enum _KeyType { black, white }
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeRight])
       .then((_) {
-    runApp(new MyApp());
+    runApp(MyApp());
   });
 }
 
 class MyApp extends StatefulWidget {
   @override
-  _MyAppState createState() => _MyAppState();
+  State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-  String? _platformVersion = 'Unknown';
+  String _platformVersion = 'Unknown';
 
   @override
   void initState() {
@@ -30,9 +30,12 @@ class _MyAppState extends State<MyApp> {
 
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
-    String? platformVersion;
+    String platformVersion;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    // We also handle the message potentially returning null.
     try {
-      platformVersion = await PluginCodelab.platformVersion;
+      platformVersion =
+          await PluginCodelab.platformVersion ?? 'Unknown platform version';
     } on PlatformException {
       platformVersion = 'Failed to get platform version.';
     }
@@ -45,12 +48,12 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _onKeyDown(int key) {
-    print("key down:$key");
+    print('key down:$key');
     PluginCodelab.onKeyDown(key).then((value) => print(value));
   }
 
   void _onKeyUp(int key) {
-    print("key up:$key");
+    print('key up:$key');
     PluginCodelab.onKeyUp(key).then((value) => print(value));
   }
 
@@ -58,12 +61,12 @@ class _MyAppState extends State<MyApp> {
     return AnimatedContainer(
       height: 200,
       width: 44,
-      duration: Duration(seconds: 2),
+      duration: const Duration(seconds: 2),
       curve: Curves.easeIn,
       child: Material(
-        color: keyType == _KeyType.White
+        color: keyType == _KeyType.white
             ? Colors.white
-            : Color.fromARGB(255, 60, 60, 80),
+            : const Color.fromARGB(255, 60, 60, 80),
         child: InkWell(
           onTap: () => _onKeyUp(key),
           onTapDown: (details) => _onKeyDown(key),
@@ -77,7 +80,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: Color.fromARGB(255, 250, 30, 0),
+        backgroundColor: const Color.fromARGB(255, 250, 30, 0),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -86,18 +89,18 @@ class _MyAppState extends State<MyApp> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  _makeKey(keyType: _KeyType.White, key: 60),
-                  _makeKey(keyType: _KeyType.Black, key: 61),
-                  _makeKey(keyType: _KeyType.White, key: 62),
-                  _makeKey(keyType: _KeyType.Black, key: 63),
-                  _makeKey(keyType: _KeyType.White, key: 64),
-                  _makeKey(keyType: _KeyType.White, key: 65),
-                  _makeKey(keyType: _KeyType.Black, key: 66),
-                  _makeKey(keyType: _KeyType.White, key: 67),
-                  _makeKey(keyType: _KeyType.Black, key: 68),
-                  _makeKey(keyType: _KeyType.White, key: 69),
-                  _makeKey(keyType: _KeyType.Black, key: 70),
-                  _makeKey(keyType: _KeyType.White, key: 71),
+                  _makeKey(keyType: _KeyType.white, key: 60),
+                  _makeKey(keyType: _KeyType.black, key: 61),
+                  _makeKey(keyType: _KeyType.white, key: 62),
+                  _makeKey(keyType: _KeyType.black, key: 63),
+                  _makeKey(keyType: _KeyType.white, key: 64),
+                  _makeKey(keyType: _KeyType.white, key: 65),
+                  _makeKey(keyType: _KeyType.black, key: 66),
+                  _makeKey(keyType: _KeyType.white, key: 67),
+                  _makeKey(keyType: _KeyType.black, key: 68),
+                  _makeKey(keyType: _KeyType.white, key: 69),
+                  _makeKey(keyType: _KeyType.black, key: 70),
+                  _makeKey(keyType: _KeyType.white, key: 71),
                 ],
               )
             ],
